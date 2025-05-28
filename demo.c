@@ -822,7 +822,7 @@ void Evaluation() {
         }
         }
         if (count == 0) {
-                printf("\n아직 실행된 알고리즘이 없습니다!\n");
+                printf("\n실행된 알고리즘이 아직 없음\n");
                 return;
             }
 
