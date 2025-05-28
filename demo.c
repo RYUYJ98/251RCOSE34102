@@ -800,6 +800,7 @@ void RoundRobin(int time_quantum) {
     Comp_Average_turnaround_time[5] = total_turn / num_processes;
 
     free(is_completed);
+    free(queue);
     free(gantt);
 }
 
