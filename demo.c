@@ -873,6 +873,6 @@ int main() {
     Create_Process();  
     Schedule_Menu();    
     Evaluation();   
-    Free_Memory(); // 메모리 해제
+    Free_Memory();
     return 0;
 }
