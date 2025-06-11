@@ -55,6 +55,15 @@ void Create_Process() {
 
 }
 
+void Reset_State() {
+    for (int i = 0; i < num_processes; i++) {
+        processes[i].remaining_time = processes[i].burst_time;
+        processes[i].waiting_time = 0;
+        processes[i].turnaround_time = 0;
+        processes[i].completion_time = 0;
+    }
+}
+
 
 
 void Schedule_Menu() {
@@ -76,25 +85,31 @@ void Schedule_Menu() {
         switch (choice) {
                 case 1:
                     FCFS();
+                    Reset_State();
                     executed_algorithms[0] = 1;
                     break;
                 case 2:
                     SJF_NonPreemptive();
+                    Reset_State();
                     executed_algorithms[1] = 1;
                     break;
                 case 3:
                     SJF_Preemptive();
+                    Reset_State();
                     executed_algorithms[2] = 1;
                     break;
                 case 4:
                     Priority_NonPreemptive();
+                    Reset_State();
                     executed_algorithms[3] = 1;
                     break;
                 case 5:
                     Priority_Preemptive();
+                    Reset_State();
                     executed_algorithms[4] = 1;
                     break;
                 case 6:
+                    Reset_State();
                     printf("RR의 Time Quantum: ");
                     scanf("%d", &time_quantum);
                     RoundRobin(time_quantum);
@@ -365,7 +380,7 @@ void SJF_Preemptive() {
 
         for (int i = 0; i < num_processes; i++) {
             if (processes[i].arrival_time <= current_time && is_completed[i] == 0) {
-                if (processes[i].remaining_time < min_remain) {
+                if (p_index == -1 ||processes[i].remaining_time < min_remain) {
                     min_remain = processes[i].remaining_time;
                     p_index = i;
                 }
@@ -669,7 +684,7 @@ void RoundRobin(int time_quantum) {
 
     int max_possible_time = latest_arrival + total_burst;
     
-    int* gantt = (int*)malloc(sizeof(int) * (max_possible_time + 1));
+    int* gantt = (int*)malloc(sizeof(int) * ((max_possible_time + 1)*3));
 
     if (gantt == NULL) {
         printf("메모리 할당 실패\n");
@@ -714,6 +729,10 @@ void RoundRobin(int time_quantum) {
     while (completed != num_processes) {
         // 모든 큐의 도착시간이 0이 아닐때는 간트에 모두 0이 기록되도록 
         if (front == rear) {
+            if (current_time >= (max_possible_time + 1) * 3) { 
+            printf("ERROR: gantt 초과n");
+            break;
+            }
             gantt[current_time] = 0; 
             current_time++;
 
